@@ -1,0 +1,47 @@
+extend ../layout
+block content
+	if can_add
+		a.btn.btn-primary(href="/#{space}/profile/create")
+			i.fa.fa-plus
+			span &nbsp;#{__('New Profile')}
+	div.panel.colourable.mar_u20
+		div.panel-body
+			if data
+				if data.rows
+					if data.rows.length > 0
+						table.table.table-hover
+							thead
+								tr
+									th #{__('Name')}
+									th #{__('ACL Index')}
+									th #{__('Group')}
+									th #{__('Status')}
+									if can_edit
+										th
+							tbody
+								each row in data.rows
+									tr
+										td #{row.prof_name}
+										td #{acl[row.acl_index]}
+										td
+											each g in groups
+												if g.group_id == row['group_id']
+													| #{g.name}
+										td 
+											if row.status_id == 0
+												| #{__('In-Active')}
+											else
+												| #{__('Active')}
+										if can_edit
+											td
+												a(href="/#{space}/profile/edit/#{row.prof_id}")
+													i.fa.fa-edit
+													span &nbsp;#{__('Edit')}
+										if can_delete
+											td
+												a.action-delete(onclick="return confirm('Do you really want to delete this profile?');",href="/#{space}/profile/delete/#{row.prof_id}")
+													i.fa.fa-delete
+													span &nbsp;#{__('Delete')}
+					else
+						div
+							h3 #{__('No Records Found')}

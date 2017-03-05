@@ -1,0 +1,41 @@
+extend ../layout
+block brand
+    if item_name
+        | #{item_name}
+block content
+    if can_add
+        a.btn.btn-primary(href="/#{space}/notification/notify")
+            i.fa.fa-plus
+            span &nbsp;#{__('New Notification')}
+    div.panel.colourable.mar_u20
+        div.panel-body
+            if data
+                if data.rows
+                    if data.rows.length > 0
+                        table.table.table-hover
+                            thead
+                                tr
+                                    th #{__('Group')}
+                                    th #{__('Message')}
+                                    th #{__('Status')}
+                                    if can_edit
+                                        th
+                                        th
+                            tbody
+                                each row in data.rows
+                                    tr
+                                        td #{row.member_group}
+                                        td #{row.message}
+                                        td #{row.status}
+                                        if can_approve
+                                            td
+                                                if row.status == 'Not Approved'
+                                                    a.btn.btn-primary(href="/#{space}/notification/approve/#{row.id}")
+                                                        i.fa.fa-thumbs-up
+                                                        span &nbsp;#{__('Approve & Send')}
+                                                a.btn.btn-info(href="/#{space}/notification/resend/#{row.id}", style="display: inline-block; margin-left: 10px;")
+                                                    i.fa.fa-repeat
+                                                    span &nbsp;#{__('Re-send')}
+                    else
+                        div
+                            h3 No Records Found

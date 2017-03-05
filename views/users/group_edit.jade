@@ -1,0 +1,26 @@
+extend ../layout
+block content
+	div.col-sm-10
+		div.panel.colourable.mar_u20
+			div.panel-body
+				h2 #{title}
+				hr
+				form(method="POST", action="#{url}")
+					div.col-sm-10
+						.form-group.m-b-20
+							label.control-label #{__('Group Name')}
+							input.form-control(type='text', name="name", placeholder="#{__('Group Name')}", value="#{row.name}")
+					div.col-sm-10
+						div.text-right
+							- var btntext = action === 'create' ? 'Create Group' : 'Update Group';
+							input.btn.btn-primary(type="submit", value="#{__(btntext)}")
+							a.btn.btn-danger(href="/cci/groups") #{__('Cancel')}
+					div(style="clear: both;")
+	div.error.mar_u20.col-sm-4
+		if message
+			p #{message}
+		if errors
+			ul.errors
+				each error in errors
+					li #{error.msg}
+	div(style="clear: both;")

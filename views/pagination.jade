@@ -1,0 +1,26 @@
+div(style="clear: both;")
+div.row
+    div.col-sm-6.pad20
+        - var total = data.total
+        - var end = parseInt(data.offset) + parseInt(data.limit)
+        if end > total
+            - end = total
+        b #{__('Showing')} #{parseInt(data.offset) + 1} - #{end} #{__('of')} #{total}
+    if pagination.showPaging
+        div.col-sm-6(style="padding-right:0;")
+            div(class="pagination pull-right")
+                ul
+                    if pagination.showPrevious
+                        li
+                            a(href="#{pagination.prevURL}") #{__('Prev')}
+                    each map in pagination.pageUrls
+                        if map.active
+                            li.active
+                                a(href="#{map.url}") #{map.page}
+                        else
+                            li
+                                a(href="#{map.url}") #{map.page}
+                    if pagination.showNext
+                        li
+                            a(href="#{pagination.nextURL}") #{__('Next')}
+div(style="clear: both;")

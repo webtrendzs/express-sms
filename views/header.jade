@@ -1,0 +1,9 @@
+header#header
+    .inside
+        include menu
+        .menu-dropdown.pull-right
+            span(style="padding-right:12px;") #{user.userfullname}
+            span.seperator |
+            a.user-menu(style="padding-left:12px;color:#fff;",href="/logout")
+                span #{__('Logout')}
+        .clear

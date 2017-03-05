@@ -1,0 +1,90 @@
+doctype html
+html(lang="#{lang}")
+    head
+        meta(charset='utf-8')
+        title #{title}
+        meta(content="", name="description")
+        meta(content="", name="author")
+        link(href="/css/bootstrap.min.css", rel="stylesheet")
+        link(href="/fonts/font-awesome/css/font-awesome.min.css", rel="stylesheet")
+        link(rel='stylesheet', href='/css/screen.css')
+        link(rel='stylesheet', href='/css/datepicker.css')
+        link(rel='stylesheet', href='/css/print.css')
+        script(src="/js/jQuery/jquery-1.11.1.min.js")
+    body.theme-default
+        div.wrapper
+            include system
+            div.wrapper-inner
+                include header
+                include filters
+                #main
+                    block content
+                include footer
+        #receipt
+        script(src="/js/bootstrap.min.js")
+        script(src="/js/bootstrap-datepicker.min.js")
+        script.
+            $(document).ready(function ($) {
+
+                $("input.all-px").click(function () {
+
+                    var _this = $(this);
+                    var inputs = _this.closest('fieldset').find("input.px");
+
+                    inputs.each(function () {
+
+                        var checked = $(this).prop('checked');
+
+                        if (!checked)
+                            $(this).prop('checked', true);
+                        if (_this.hasClass('is_all'))
+                            $(this).prop('checked', false);
+
+                    });
+
+                    if (!_this.hasClass('is_all'))
+                        _this.addClass('is_all').closest('.toolbar.checkbox label').text("Uncheck all");
+                    else
+                        _this.removeClass('is_all').closest('.toolbar.checkbox label').text("Check all");
+                });
+            });
+        script.
+            var options = {
+                format: 'yyyy-mm-dd',
+                language: '#{lang}'
+            };
+            var _data = !{JSON.stringify(data)};
+            if (_data && _data.viewOptions) {
+
+                var f_options = _data.viewOptions;
+
+                if (f_options && f_options.hasOwnProperty('datefilter'))
+                    options = f_options.datefilter;
+            }
+
+            $('.datepicker').datepicker(options).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
+            });
+        script.
+             $('input, textarea').placeholder();
+        script.
+                var tOptions=$("select[name='type_id']").find('option');
+
+                $("select[name='prior_id']").change(function () {
+
+                    var val = $(this).val(),opts=[],htmlOptions='';
+
+                    if(val == '')
+                        opts=tOptions;
+                    else
+                    opts = tOptions.filter(function () { return $(this).data('p') == val; });
+
+                    $.each(opts,function(i,v){
+                        htmlOptions+= v.outerHTML;
+                    });
+
+                    $("select[name='type_id']").html(htmlOptions);
+
+                });
+
+

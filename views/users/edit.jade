@@ -1,0 +1,89 @@
+extend ../layout
+block content
+	div.col-sm-9
+		div.panel.colourable.mar_u20
+			div.panel-body
+				h2 #{title} #{__('User')}
+				hr
+				- var url = action === 'edit' ? space + '/user/edit/' + user_id : space + '/user/create'
+				form(method="POST", action="/#{url}")
+					input(type='hidden', name="emp_id",value="#{user.user_id}")
+					div.col-sm-4
+						.form-group.m-b-20
+							label.control-label #{__('Full Name')}
+							input.form-control(type='text', name="userfullname", value="#{row.userfullname}")
+					div.col-sm-4
+						.form-group.m-b-20
+							label.control-label #{__('Username')}
+							input.form-control(type='text', name="username", value="#{row.username}")
+					div.col-sm-4
+						.form-group.m-b-20
+							label.control-label #{__('User Profile')}
+							select.form-control(name="prof_id")
+								option(value="")
+								if profiles
+									if action === 'create'
+										each p in profiles
+											option(value="#{p.prof_id}") #{p.prof_name}
+									else
+										each p in profiles
+											if p.prof_id == row['prof_id']
+												option(value="#{p.prof_id}", selected="selected") #{p.prof_name}
+											else
+												option(value="#{p.prof_id}") #{p.prof_name}
+					div.col-sm-4
+						.form-group.m-b-20
+							label.control-label #{__('Email')}
+							input.form-control(type='text', name="useremail", value="#{row.useremail}")
+					div.col-sm-4
+						.form-group.m-b-20
+							label.control-label #{__('Phone')}
+							input.form-control(type='text', name="userphone", value="#{row.userphone}")
+					div.col-sm-4
+						.form-group.m-b-20
+							label.control-label #{__('Status')}
+							select.form-control(name="status_id")
+								if row.status_id == 0
+									option(value="1") #{__('Active')}
+									option(value="0", selected="selected") #{__('In-active')}
+								else
+									option(value="1", selected="selected") #{__('Active')}
+									option(value="0") #{__('In-active')}
+					div.col-sm-4.hide
+						.form-group.m-b-20
+							label.control-label #{__('Select Language')}
+							select.form-control(name="user_lang")
+								if action === 'create'
+									option(value="fr") #{__('French')}
+									option(value="en", selected="selected") #{__('English')}
+								else
+									if 'en' == row['user_lang']
+										option(value="fr") #{__('French')}
+										option(value="en", selected="selected") #{__('English')}
+									else
+										option(value="en") #{__('English')}
+										option(value="fr", selected="selected") #{__('French')}
+
+					if action === 'create'
+						div.col-sm-4
+							.form-group.m-b-20
+								label.control-label #{__('Password')}
+								input.form-control(type='password', name="password")
+						div.col-sm-4
+							.form-group.m-b-20
+								label.control-label #{__('Confirm Password')}
+								input.form-control(type='password', name="password_c")
+					div(style="clear: both;")
+					div.col-sm-12
+						div.text-right.action-buttons
+							- var a = (action === 'create') ? 'Add User' : 'Update';
+							button.btn.btn-primary(type="submit") #{__(a)}
+							a.btn.btn-danger(href="/cci/users") #{__('Cancel')}
+	div.error.mar_u20.col-sm-3
+		if message
+			p #{message}
+		if errors
+			ul.errors
+				each error in errors
+					li #{error.msg}
+	div(style="clear: both;")

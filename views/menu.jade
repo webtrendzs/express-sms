@@ -1,0 +1,20 @@
+#menu.pull-left
+    ul
+        li
+            a(href="/")
+                span.mm-text #{__('Home')}
+        if menu
+            each row in menu
+                if(row.has_items)
+                    li.dropdown.mm-dropdown
+                        a.dropdown-toggle(data-toggle="dropdown") #{__(row.name)}
+                        span.caret
+                        ul.dropdown-menu.menu-dropdown.dropdown-menu-right
+                            each item in row.items
+                                li
+                                    a(href="#{item.url}")
+                                        span.mm-text  #{__(item.name)}
+                else
+                    li
+                        a(href="#{row.url}")
+                            span.mm-text #{__(row.name)}

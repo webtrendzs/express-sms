@@ -1,0 +1,28 @@
+extend layout
+block content
+    div.col-sm-9
+        div.panel.colourable.mar_u20
+            div.panel-body
+                h2 #{__('Send an SMS')}
+                hr
+                form.margin-bottom-0(action='/' method='POST')
+                    div.col-sm-12
+                        .form-group.m-b-20
+                            textarea.form-control(name="message", placeholder="#{__('Message')}")
+                    div.col-sm-12
+                        .form-group.m-b-20
+                            textarea.form-control(name="recipients", placeholder="#{__('Comma seperated list of recipients')}")
+                            em
+                                | Send messages to not more than 10 people. If you want to send more, use the notification feature
+                    div.text-right.action-buttons.clear.col-sm-12
+                        button.btn.btn-primary(type='submit') #{__('Send')}
+                        a.btn.btn-danger(href="/") #{__('Cancel')}
+    div.mar_u20.col-sm-3
+        if message
+            p.alert.alert-info #{message}
+        if errors
+            .alert.alert-danger
+                ul.errors
+                    each error in errors
+                        li #{error.msg}
+    .clear

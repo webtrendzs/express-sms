@@ -1,0 +1,29 @@
+extend ../layout
+block content
+	if can_add
+		a.btn.btn-primary(href="/#{space}/group/create")
+			i.fa.fa-plus
+			span &nbsp;#{__('New Group')}
+	div.panel.colourable.mar_u20
+		div.panel-body
+			if data
+				if data.rows
+					if data.rows.length > 0
+						table.table.table-hover
+							thead
+								tr
+									th #{__('Name')}
+									if can_edit
+										th
+							tbody
+								each row in data.rows
+									tr
+										td #{row.name}
+										if can_edit
+											td
+												a(href="/#{space}/group/edit/#{row.group_id}")
+													i.fa.fa-edit
+													span &nbsp;#{__('Edit')}
+					else
+						div
+							h3 #{__('No Records Found')}

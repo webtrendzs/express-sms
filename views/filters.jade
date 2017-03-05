@@ -1,0 +1,65 @@
+if !hide_filter
+    div.filters
+        if show_user_filter
+            div.row
+                div.form-content
+                    form(method="GET", action="")
+                        div.form-group
+                            label #{__('Full Name')}
+                            if params.name
+                                input.form-control(type="text", name="name", value="#{params.name}")
+                            else
+                                input.form-control(type="text", name="name", value="")
+                        div.form-group
+                            label #{__('Username')}
+                            if params.username
+                                input.form-control(type="text", name="username", value="#{params.username}")
+                            else
+                                input.form-control(type="text", name="username", value="")
+                        button.btn.btn-primary(type="submit") #{__('Search')}
+                    div.clear
+        if data
+            if data.params
+                if data.params.length > 0
+                    div.box
+                        div.form-content
+                            form(method="POST", action="")
+                                each param in data.params
+                                    div.form-group
+                                        div(style="clear: both;")
+                                        label #{__(param.label)}
+                                        if param.type === 'text'
+                                            input.form-control(type="text", name="#{param.name}", value="#{param.value}")
+                                        else if param.type === 'date'
+                                            input.form-control.datepicker(type="text", name="#{param.name}", value="#{param.value}", placeholder="yyyy-mm-dd")
+                                        else if param.type === 'select'
+                                            - var values = param.values;
+                                            - if(typeof(param.values) === "function") values = param.values();
+                                            select.form-control(name="#{param.name}")
+                                                - var val = param.value
+                                                if values
+                                                    each row in values
+                                                        if(param.value == row.value)
+                                                            option(value="#{row.value}", selected="selected") #{__(row.name)}
+                                                        else
+                                                            option(value="#{row.value}") #{__(row.name)}
+                                button.btn.btn-primary(type="submit") #{__('Search')}
+                                a.btn.btn-danger(href="#{path}") #{__('Clear')}
+                                if data.rows
+                                    .dropdown.pull-left
+                                        a.dropdown-button.dropdown-toggle.btn.btn-primary(style="margin-left: 12px;padding-left: 7px;padding-right: 7px;",data-toggle='dropdown') #{__('Export')}
+                                            span.caret(style="margin-left:7px;")
+                                        ul.dropdown-menu.dropdown-menu-right
+                                            li
+                                                a.download(data-type='CSV',href="#{export_url}CSV", target="_blank")
+                                                    i.fa.fa-file-o
+                                                        span(style="margin-left: 12px;") #{__('Export to CSV')}
+                                            li
+                                                a.download(data-type='XLS',href="#{export_url}XLS", target="_blank")
+                                                    i.fa.fa-file-excel-o
+                                                        span(style="margin-left: 12px;") #{__('Export to EXCEL')}
+
+                        div.clear
+        div.title
+            h5(style="color:#5F5F5F;text-transform:uppercase;") #{item_name}
+            hr

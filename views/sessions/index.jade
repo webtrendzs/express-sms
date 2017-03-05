@@ -1,0 +1,46 @@
+extend ../layout
+block content
+	include ../filters
+	
+	if data.action_buttons
+		- var ab = data.action_buttons
+		div
+			each b in ab
+				- var url = b.url('')
+				a(href="#{url}", class="#{b.css_class}")
+					if b.name === 'create'
+						i.fa.fa-plus
+						span &nbsp; #{b.label}
+					else
+						span &nbsp; #{b.label}
+	div.panel.colourable.mar_u20
+		div.panel-body
+			if data
+				if data.rows
+					if data.rows.length > 0
+						table.table.table-hover
+							thead
+								tr
+									each h in data.columns
+										th #{__(h.label)}
+									th
+							tbody
+								each row in data.rows
+									tr
+										each d in data.columns
+											if d.type === 'button'
+												td
+													- var url = d.url(row)
+													- var css_cl = d.css_class ? d.css_class : 'btn btn-danger'
+													a(href="#{url}", class="#{css_cl}") #{d.btn_label('')}
+											else
+												td #{row[d.name]}
+										td
+											if row.is_active
+												a(href="/session/kill/#{row.ses_id}") #{__('Close Session')}
+					else
+						div
+							h3 No Records Found
+	if data.rows
+		if data.rows.length > 0
+			include ../pagination

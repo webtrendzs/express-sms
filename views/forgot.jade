@@ -1,0 +1,28 @@
+doctype html
+head
+		meta(charset='utf8')
+		base(href='/')
+		title #{__('Company')}
+		link(href="css/bootstrap.min.css", rel="stylesheet")
+		link(href="styles/font-awesome/css/font-awesome.min.css", rel="stylesheet")
+		link(rel='stylesheet', href='/css/screen.css')
+		link(rel='stylesheet', href='/css/print.css')
+		link(rel='stylesheet', href='/css/ie.css')
+	body.login
+		#page-container
+			.login-header
+				.brand
+					img(src="/img/logo.png")
+			div.outer
+				.login-content
+					.title
+						h2 #{__('forgot_psw_msg')}
+					form.margin-bottom-0(action='', method='POST')
+						.form-group.m-b-20
+							input.form-control.input-lg(type='text', name="email", placeholder="#{__('Email')}")
+						.form-group.m-b-20
+							input.form-control.input-lg(type='text', name="username", placeholder="#{__('Username')}")
+						.login-buttons
+							button.btn.btn-danger.btn-block.btn-lg(type='submit') #{__('reset')}
+			div.center.error
+				p #{message}

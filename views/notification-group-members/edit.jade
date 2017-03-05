@@ -1,0 +1,34 @@
+extend ../layout
+
+block brand
+	if item_name
+		| #{item_name}
+		
+block content
+	div.col-sm-10
+		div.panel.colourable.mar_u20
+			div.panel-body
+				h2 Notification Group Member
+				hr
+				form(method="POST", action="#{url}")
+					div.col-sm-10
+						.form-group.m-b-20
+							label.control-label #{__('Name')}
+							input.form-control(type='text', name="name", placeholder="#{__('Name')}", value="#{row.name}")
+						.form-group.m-b-20
+							label.control-label #{__('Phone')}
+							input.form-control(type='text', name="phone", placeholder="#{__('Phone')}", value="#{row.phone}")		
+						div(style="clear: both;")
+					div.col-sm-10
+						div.text-right
+							input.btn.btn-primary(type="submit", value="Submit")
+						div(style="clear: both;")
+					div(style="clear: both;")
+	div.error.mar_u20.col-sm-4
+		if message
+			p #{message}
+		if errors
+			ul.errors
+				each error in errors
+					li #{error.msg}
+	div(style="clear: both;")

@@ -1,0 +1,49 @@
+extend ../layout
+block content
+	if can_add
+		a.btn.btn-primary(href="/#{space}/user/create")
+			i.fa.fa-plus
+			span &nbsp;#{__('New User')}
+	div.panel.colourable.mar_u20
+		div.panel-body
+			if data
+				if data.rows
+					table.table.table-hover
+						thead
+							tr
+								th #{__('Full Name')}
+								th #{__('Username')}
+								th #{__('User Profile')}
+								th #{__('Email')}
+								th #{__('Phone')}
+								th #{__('Status')}
+								th.hide #{__('Date Created')}
+								if can_edit
+									th
+						tbody
+							each row in data.rows
+								tr
+									td #{row.userfullname}
+									td #{row.username}
+									td #{row.profile}
+									td #{row.useremail}
+									td #{row.userphone}
+									td 
+										if row.status_id == 0
+											| #{__('In-Active')}
+										else if row.login_tries>=3
+											| #{__('Locked')}
+										else
+											| #{__('Active')}
+									td.hide #{row.date_created}
+									if can_edit
+										td
+											a(href="/#{space}/user/edit/#{row.user_id}")
+												span &nbsp;#{__('Edit')}
+									if can_reset
+										td
+											a(href="/#{space}/user/reset/#{row.user_id}")
+												span &nbsp;#{__('Change Password')}
+	if data.rows
+		if data.rows.length > 0
+			include ../pagination

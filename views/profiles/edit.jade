@@ -1,0 +1,84 @@
+extend ../layout
+block content
+    div.col-sm-12#profiles(style="margin-bottom:40px;")
+        div.panel.col-sm-9.colourable.mar_u20(style="padding:10px;")
+            div(style="border:none;")
+                h2 #{title} #{__('Profile')}
+                hr
+                form(method="POST", action="#{url}")
+                    div.col-sm-4
+                        .form-group.m-b-20
+                            label.control-label #{__('Profile Name')}
+                            input.form-control(type='text', name="name", value="#{row.prof_name}")
+                    div.col-sm-4
+                        .form-group.m-b-20
+                            label.control-label #{__('Assigned Group')}
+                            select.form-control(name="group_id")
+                                if groups
+                                    if action === 'create'
+                                        each g in groups
+                                            option(value="#{g.group_id}") #{g.name}
+                                    else
+                                        each g in groups
+                                            if g.group_id == row['group_id']
+                                                option(value="#{g.group_id}", selected="selected") #{g.name}
+                                            else
+                                                option(value="#{g.group_id}") #{g.name}
+                    div.col-sm-4
+                        .form-group.m-b-20
+                            label.control-label #{__('Status')}
+                            select.form-control(name="status")
+                                if row.status_id == 0
+                                    option(value="1") #{__('Active')}
+                                    option(value="0", selected="selected") #{__('In-active')}
+                                else
+                                    option(value="1", selected="selected") #{__('Active')}
+                                    option(value="0") #{__('In-active')}
+                    div.col-sm-4
+                        .form-group.m-b-20
+                            label.control-label #{__('ACL Index')}
+                            select.form-control(name="acl_index")
+                                each ac in acl
+                                    if ac.index == row['acl_index']
+                                        option(value="#{ac.index}", selected="selected") #{ac.name}
+                                    else
+                                        option(value="#{ac.index}") #{ac.name}
+                    div(style="clear: both;")
+                    h3 #{__('Permissions')}
+                    div(style="clear: both;")
+                    hr
+                    div.permissions.col-sm-12.row(style="padding-right:0px;")
+
+                        each permission, index in permissions
+                            fieldset
+                                legend #{index}
+                                - var id=index.toLowerCase().replace(' ','-')
+                                div.toolbar.checkbox
+                                    input(type="checkbox",id="#{id}",class="all-px",name="checkall")
+                                    label(for="#{id}") #{__('Check all')}
+                                each pp in permission
+                                    div.col-sm-4
+                                        .form-group.m-b-20
+                                            p
+                                                if pp.checked
+                                                    input.filled-in(type="checkbox", class="px", id="#{pp.value}",name="#{pp.value}", checked="checked")
+                                                else
+                                                    input.filled-in(type="checkbox", id="#{pp.value}",class="px", name="#{pp.value}")
+                                                label(for="#{pp.value}") #{__(pp.name)}
+                        div(style="clear: both;")
+                        div.col-sm-12(style="padding-right:0px;")
+                            div.text-right
+                                - var btntext = action === 'create' ? 'Create Profile' : 'Update Profile';
+                                input.btn.btn-primary(type="submit", value="#{__(btntext)}")
+                                a.btn.btn-danger(href="/cci/profiles",style="margin-left:20px;") #{__('Cancel')}
+                    div(style="clear: both;")
+        div.error.mar_u20.col-sm-3(style="padding:10px;")
+            if message
+                p #{message}
+            if errors
+                h5 #{__('Errors')}
+                hr
+                ul.errors(style="padding:0px;margin:0px;")
+                    each error in errors
+                        li #{error.msg}
+        div(style="clear: both;")

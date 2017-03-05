@@ -1,0 +1,44 @@
+extend ../layout
+
+block brand
+	if item_name
+		| #{item_name}
+block content
+	if can_add
+		a.btn.btn-primary(href="/#{space}/notification-group/member/create/#{groupid}")
+			i.fa.fa-plus
+			span &nbsp;#{__('New Member')}
+		a.btn.btn-default(style="margin-left:20px;" href="/#{space}/notification-group/member/upload/#{groupid}")
+			i.fa.fa-upload
+			span &nbsp;#{__('Upload a CSV')}
+		a.btn.btn-danger(style="margin-left:20px;" href="/#{space}/notification/groups")
+			i.fa.fa-arrow-left
+			span &nbsp;#{__('Back')}
+	div.panel.colourable.mar_u20
+		div.panel-body
+			if data
+				if data.rows
+					if data.rows.length > 0
+						table.table.table-hover
+							thead
+								tr
+									th #{__('Name')}
+									th #{__('Phone')}
+									if can_edit
+										th
+							tbody
+								each row in data.rows
+									tr
+										td #{row.name}
+										td #{row.phone}
+										if !can_edit
+											td
+												a(href="/notification-group/edit/#{row.id}")
+													i.fa.fa-edit
+													span &nbsp;#{__('Edit')}
+												a(href="/notification-group/members/#{row.id}", style="display: inline-block; margin-left: 10px;")
+													i.fa.fa-edit
+													span &nbsp;#{__('Remove')}
+					else
+						div
+							h3 No Records Found

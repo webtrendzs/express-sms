@@ -1,0 +1,37 @@
+doctype html
+html(lang="#{lang}")
+    head
+        meta(charset='utf-8')
+        title #{title}
+        meta(content="", name="description")
+        meta(content="", name="author")
+        link(href="/css/bootstrap.min.css", rel="stylesheet")
+        link(rel='stylesheet', href='/css/login.css')
+    body.login
+        #page-container
+            .login-header
+                .brand
+                    img(src="/img/logo.png")
+            div.outer
+                .login-content
+                    .title
+                            h2.title.pull-left #{__('Sign in to continue')}
+                    form.margin-bottom-0(action='', method='POST')
+                        .form-group.m-b-20
+                            input.form-control.input-lg(type='text', name="username", placeholder="#{__('Username')}", value="#{username}")
+                        .form-group.m-b-20
+                            input.form-control.input-lg(type='password', name="password", placeholder="#{__('Password')}")
+                        .checkbox.m-b-20.hidden
+                            label
+                                a(href="mailto:info@smscompany.com?Subject=Forgot%20Password",target="_top") #{__('Forgot Password')}
+                        .login-buttons
+                            button.btn.btn-danger.btn-block.btn-lg.btn-login(type='submit') #{__('Sign in')}
+                    div.center.error(style="color:#fff;")
+                        if message
+                            hr
+                            p #{message}
+                        if errors
+                            hr
+                            ul.errors(style="padding:0px;margin:0px;")
+                                each error in errors
+                                    li #{error.msg}

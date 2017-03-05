@@ -1,0 +1,33 @@
+- var at = data.extra_data.before_table;
+div.summary
+    if at.type === 'table'
+        table.table.summary
+            if at.has_headers
+                thead
+            each row in at.rows
+                tr
+                    - var ic = 0;
+                    each col in at.columns
+                        if ic == 0 && at.has_headers
+                            th #{row[col.name]}
+                        else
+                            td #{row[col.name]}
+                        - ic++;
+style.
+    div.summary {
+        border-bottom:3px double #06936f;
+    }
+    .table.summary {
+        width: 500px;
+        margin-bottom:0;
+        border: 2px solid #06936f;
+        border-bottom: 0;
+    }
+    .table.summary td {
+        text-align: right;
+        border-color: #06936f;
+    }
+
+    .table.summary th {
+        border-color: #06936f;
+    }

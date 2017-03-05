@@ -1,0 +1,42 @@
+extend ../layout
+
+block brand
+	if item_name
+		| #{item_name}
+		
+block content
+	div.col-sm-10
+		div.panel.colourable.mar_u20
+			div.panel-body
+				h2 Notification Group
+				hr
+				form(method="POST", action="#{url}")
+					div.col-sm-5
+						.form-group.m-b-20
+							label.control-label #{__('Group Name')}
+							input.form-control(type='text', name="name", placeholder="#{__('Group Name')}", value="#{row.name}")
+					div.col-sm-5
+						.form-group.m-b-20
+							label.control-label #{__('Choose country')}
+							select.form-control(name="country")
+								option(value="ke") #{__('KENYA')}
+								option(value="ss") #{__('SOUTH SUDAN')}
+								option(value="ug") #{__('UGANDA')}
+								option(value="rw") #{__('RWANDA')}
+								option(value="zr") #{__('DRC')}
+
+					div.col-sm-10
+						div.text-right.action-buttons
+							- var a = (action === 'create') ? 'Create Group' : 'Update Group';
+							button.btn.btn-primary(type="submit") #{a}
+							a.btn.btn-danger(href="/#{space}/notifications/groups") Cancel
+						div(style="clear: both;")
+					div(style="clear: both;")
+	div.error.mar_u20.col-sm-4
+		if message
+			p #{message}
+		if errors
+			ul.errors
+				each error in errors
+					li #{error.msg}
+	div(style="clear: both;")
