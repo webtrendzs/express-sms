@@ -9,7 +9,7 @@ module.exports.load = function(config, callback) {
 			}
 		}
 	
-	var sql = "select g.id, g.name,g.country, count(m.id) as no_of_members from tbl_notificationgroups g left join tbl_notificationgroupmembers m on g.id = m.group_id {where} group by g.id";
+	var sql = "select g.id, g.name,g.country, (select count(id) from tbl_message_template_attribute_values av where group_id = g.id) as template_count, count(m.id) as manual_count from tbl_notificationgroups g left join tbl_notificationgroupmembers m on g.id = m.group_id {where} group by g.id";
 
 	var whr = '';
 	

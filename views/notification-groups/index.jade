@@ -21,14 +21,14 @@ block content
 									th #{__('No of Members')}
 									if can_edit
 										th
-										th 
 							tbody
 								each row in data.rows
 									tr
 										td #{row.name}
 										- var _country = row.country.toUpperCase()
+										- var no_of_members = parseInt(row.template_count, 10) + parseInt(row.manual_count, 10)
 										td #{_country}
-										td #{row.no_of_members}
+										td #{no_of_members}
 										if can_edit
 											td
 												a(href="/#{space}/notification-group/edit/#{row.id}")
@@ -37,6 +37,9 @@ block content
 												a(href="/#{space}/notification-group/members/#{row.id}", style="display: inline-block; margin-left: 10px;")
 													i.fa.fa-edit
 													span &nbsp;#{__('Members')}
+												a(href="/#{space}/notification-group/templates/#{row.id}", style="display: inline-block; margin-left: 10px;")
+													i.fa.fa-edit
+													span &nbsp;#{__('Message Templates')}
 					else
 						div
 							h3 No Records Found

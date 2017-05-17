@@ -63,7 +63,7 @@ module.exports.controller = function (app) {
                 }
             } else {
 
-                return View.render('bulk_sms').with(req, res, {
+                return View.render('single_sms').with(req, res, {
                     item_name: 'SMS / Send Bulk SMSes',
                     errors: errors
                 });

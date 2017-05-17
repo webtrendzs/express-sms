@@ -13,7 +13,7 @@ module.exports.config = function (params) {
             username: "apiname",
             api_key: "api_key"
         },
-        uploadDir: 'uploads',
+        uploadDir: 'assets/uploads',
         assetsDir: 'assets',
         viewsDir: 'views',
         crons: [

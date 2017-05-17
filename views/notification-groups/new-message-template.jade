@@ -1,0 +1,37 @@
+extend ../layout
+
+block brand
+    if item_name
+        | #{item_name}
+
+block content
+    div.col-sm-10
+        div.panel.colourable.mar_u20
+            div.panel-body
+                h2 Message Template
+                hr
+                form(method="POST", action="#{url}")
+                    input(type='hidden', name="group_id", value="#{group_id}")
+                    div.col-sm-10
+                        .form-group.m-b-20
+                            label.control-label #{__('Template Name')}
+                            input.form-control(type='text', name="title", value="#{row.title}")
+                        .form-group.m-b-20
+                            label.control-label #{__('Message')}
+                            textarea.form-control(name="message", maxlength="600") #{row.message}
+                            em.hint Hint: Please use place holders like `{name}` tag to insert the recipient’s name in the location that you intend the name to appear within the message when composing a new message.
+                    div.col-sm-10
+                        div.text-right.action-buttons
+                            - var a = (action === 'create') ? 'Add' : 'Update';
+                            button.btn.btn-primary(type="submit") #{a}
+                            a.btn.btn-danger(href="/#{space}/notifications/groups") Cancel
+                        div(style="clear: both;")
+                    div(style="clear: both;")
+    div.error.mar_u20.col-sm-2
+        if message
+            p #{message}
+        if errors
+            ul.errors
+                each error in errors
+                    li #{error.msg}
+    div(style="clear: both;")

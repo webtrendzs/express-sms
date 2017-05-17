@@ -5,7 +5,7 @@ block content
             div.panel-body
                 h2 #{__('Bulk Upload')}
                 hr
-                form.margin-bottom-0(action='/', enctype="multipart/form-data", method='POST')
+                form.margin-bottom-0(action='#{url}', enctype="multipart/form-data", method='POST')
                     input(type="hidden" name="groupname" value="#{group_name}")
                     input(type="hidden" name="group_id" value="#{groupid}")
                     div.col-sm-12

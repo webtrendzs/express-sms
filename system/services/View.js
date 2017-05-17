@@ -16,7 +16,6 @@ exports.render = function (template) {
         with: function (req, res, data) {
 
             Menu.profile(req, req.user.prof_id, function (err, profile) {
-
                 var options = _.extend({
                     menu: profile.menu,
                     user: req.user,

@@ -46,6 +46,8 @@
 ################################################
 
 node_modules
+assets/uploads
+uploads
 bower_components
 
 

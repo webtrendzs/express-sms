@@ -1,5 +1,8 @@
 module.exports.controller = function (app) {
 
+    var multer  = require('multer');
+    var upload = multer({dest: __dirname + '/../../' + Config.get('uploadDir')});
+
     var load_notification_group_members = function (req, res) {
 
         View.checkAuthenticated(req).then(function (prof_id) {
@@ -10,7 +13,6 @@ module.exports.controller = function (app) {
                     group_id: req.params.groupid
                 }
             });
-
 
             Loader.load(config, function (err, data) {
                 delete config.filters;
@@ -111,7 +113,6 @@ module.exports.controller = function (app) {
 
             Loader.load(config, function (err, data) {
                 delete config.filters;
-                Utils.log(data);
                 View.render('notification-group-members/upload').with(req, res, {
                     group_name: data.rows[0].name,
                     groupid: req.params.groupid,
@@ -126,16 +127,14 @@ module.exports.controller = function (app) {
         });
     });
 
-    app.post("/:space/notification-group/member/upload/:groupid", function (req, res) {
+    app.post("/:space/notification-group/member/upload/:groupid", upload.single('subscribers'), function (req, res) {
 
         View.checkAuthenticated(req).then(function (prof_id) {
 
-            FileManager.uploadFile(req, 'subscribers', function (err, success) {
+            FileManager.uploadFile(req, function (err, success) {
 
                 if (!err) {
-
-                    res.redirect('/' + space + '/notification-group/members/' + req.params.groupid);
-
+                    res.redirect('/' + req.params.space + '/notification-group/members/' + req.params.groupid);
                 } else {
 
                     View.render('notification-group-members/edit').with(req, res, {
@@ -148,31 +147,6 @@ module.exports.controller = function (app) {
                         message: "Could not upload file"
                     });
                 }
-            });
-
-        }).catch(function (failed) {
-            res.redirect('/login');
-        });
-    });
-
-    app.get('/:space/notification/groups', Auth.can('view_notification_groups'), function (req, res) {
-
-        var space = req.params.space;
-
-        View.checkAuthenticated(req).then(function (prof_id) {
-
-            var config = Config.defaults({
-                space: space,
-                name: 'notification-groups'
-            });
-
-            Loader.load(config, function (err, data) {
-                View.render('notification-groups/index').with(req, res, {
-                    data: data,
-                    item_name: req.__('Notification Group'),
-                    can_edit: Auth.has_permission(req, 'view_notification_groups'),
-                    can_add: Auth.has_permission(req, 'view_notification_groups')
-                });
             });
 
         }).catch(function (failed) {
@@ -324,6 +298,135 @@ module.exports.controller = function (app) {
         });
     });
 
+    app.get("/:space/notification-group/templates/:groupid", Auth.can('create_notification_groups'), function (req, res) {
+        var group_id = req.params.groupid;
+        View.checkAuthenticated(req).then(function (prof_id) {
+            MessageTemplates.findAll({where: {group_id: group_id}}).then(function(templates){
+                View.render('notification-groups/message-templates').with(req, res, {
+                    title: req.__('Message Templates'),
+                    group_id: group_id,
+                    data: templates,
+                    can_add: Auth.can('create_notification_groups'),
+                    can_edit: Auth.can('create_notification_groups'),
+                    item_name: req.__('Notification Group Message Templates')
+                });
+            });
+        }).catch(function (failed) {
+            res.redirect('/login');
+        });
+    });
+
+    app.get("/:space/notification-group/templates/:groupid/create", Auth.can('create_notification_groups'), function (req, res) {
+        var group_id = req.params.groupid;
+        View.checkAuthenticated(req).then(function (prof_id) {
+                View.render('notification-groups/new-message-template').with(req, res, {
+                    title: req.__('Message Templates'),
+                    group_id: group_id,
+                    row: {
+                        title: '',
+                        message: ''
+                    },
+                    action: 'create',
+                    can_add: Auth.can('create_notification_groups'),
+                    can_edit: Auth.can('create_notification_groups'),
+                    item_name: req.__('Notification Group Message / Create')
+                });
+        }).catch(function (failed) {
+            res.redirect('/login');
+        });
+    });
+
+    app.post("/:space/notification-group/templates/:groupid/create", Auth.can('create_notification_groups'), function (req, res) {
+        var group_id = req.params.groupid;
+        var space = req.params.space;
+        View.checkAuthenticated(req).then(function (prof_id) {
+            req.assert('title', 'Name is required').notEmpty();
+            req.assert('message', 'Message is required').notEmpty();
+            var errors = req.validationErrors();
+            if (!errors) {
+                MessageTemplates.create(req.body).then(function(){
+                    res.redirect('/'+space+'/notification-group/templates/'+group_id);
+                })
+            } else {
+                View.render('notification-groups/new-message-template').with(req, res, {
+                    title: req.__('Message Templates'),
+                    group_id: group_id,
+                    row: req.body,
+                    action: 'create',
+                    errors: errors,
+                    can_add: Auth.can('create_notification_groups'),
+                    can_edit: Auth.can('create_notification_groups'),
+                    item_name: req.__('Notification Group Message / Create')
+                });
+            }
+        }).catch(function (failed) {
+            res.redirect('/login');
+        });
+    });
+
+    app.get("/:space/notification-group/templates/:groupid/edit/:template", Auth.can('create_notification_groups'), function (req, res) {
+        var group_id = req.params.groupid;
+        var template_id = req.params.template;
+        View.checkAuthenticated(req).then(function (prof_id) {
+            MessageTemplates.findOne({where: {id: template_id}}).then(function(template){
+                View.render('notification-groups/new-message-template').with(req, res, {
+                    title: req.__('Message Templates'),
+                    group_id: group_id,
+                    row: template.dataValues,
+                    can_add: Auth.can('create_notification_groups'),
+                    can_edit: Auth.can('create_notification_groups'),
+                    item_name: req.__('Notification Group Message Templates')
+                });
+            });
+        }).catch(function (failed) {
+            res.redirect('/login');
+        });
+    });
+
+    app.post("/:space/notification-group/templates/:groupid/edit/:template", Auth.can('create_notification_groups'), function (req, res) {
+        var group_id = req.params.groupid;
+        var template_id = req.params.template;
+        var space = req.params.space;
+        View.checkAuthenticated(req).then(function (prof_id) {
+            req.assert('title', 'Name is required').notEmpty();
+            req.assert('message', 'Message is required').notEmpty();
+            var errors = req.validationErrors();
+            if (!errors) {
+                MessageTemplates.findOne({where: { id: template_id}}).then(function(row){
+                    if (row) {
+                        row.updateAttributes(req.body);
+                    }
+                    res.redirect('/'+space+'/notification-group/templates/'+group_id);
+                });
+            } else {
+                View.render('notification-groups/new-message-template').with(req, res, {
+                    title: req.__('Message Templates'),
+                    group_id: group_id,
+                    row: req.body,
+                    action: 'create',
+                    errors: errors,
+                    can_add: Auth.can('create_notification_groups'),
+                    can_edit: Auth.can('create_notification_groups'),
+                    item_name: req.__('Notification Group Message / Create')
+                });
+            }
+        }).catch(function (failed) {
+            res.redirect('/login');
+        });
+    });
+
+    app.get("/:space/notification-group/templates/:groupid/delete/:template", Auth.can('create_notification_groups'), function (req, res) {
+        var group_id = req.params.groupid;
+        var template_id = req.params.template;
+        var space = req.params.space;
+        View.checkAuthenticated(req).then(function (prof_id) {
+                MessageTemplates.destroy({where: { id: template_id}}).then(function(row){
+                    res.redirect('/'+space+'/notification-group/templates/'+group_id);
+                });
+        }).catch(function (failed) {
+            res.redirect('/login');
+        });
+    });
 
     var load_notification_group = function (req, callback) {
         var config = Config.defaults({

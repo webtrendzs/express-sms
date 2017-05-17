@@ -28,6 +28,32 @@ module.exports.controller = function(app) {
 
 		});
 	};
+
+	app.get('/:space/notification/groups', Auth.can('view_notification_groups'), function (req, res) {
+
+		var space = req.params.space;
+
+		View.checkAuthenticated(req).then(function (prof_id) {
+
+			var config = Config.defaults({
+				space: space,
+				name: 'notification-groups'
+			});
+
+			Loader.load(config, function (err, data) {
+				View.render('notification-groups/index').with(req, res, {
+					data: data,
+					item_name: req.__('Notification Group'),
+					can_edit: Auth.has_permission(req, 'view_notification_groups'),
+					can_add: Auth.has_permission(req, 'view_notification_groups')
+				});
+			});
+
+		}).catch(function (failed) {
+			res.redirect('/login');
+		});
+	});
+
 	app.get("/:space/notification/notify", Auth.can('can_notify_users'), function(req, res) {
 		load(req, res, null);
 	});
