@@ -11,7 +11,6 @@ fs.readdirSync(__dirname).filter(function (file) {
 }).forEach(function (file) {
 
     var model = sequelize["import"](path.join(__dirname, file));
-    console.log(path.join(__dirname, file));
     //globally avail all models
     global[file.substr(0,file.indexOf('.'))] = require(__dirname + '/models/' + file).model(Sequelize, seq);
 

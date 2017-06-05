@@ -9,7 +9,10 @@ module.exports.load = function(config, callback) {
             }
         }
 
-    var sql = "select id,(select name from tbl_notificationgroups where id = groupid limit 1) as member_group,message, (case when approved = 'True' then 'Approved' else 'Not Approved' end) as status from tbl_group_notifications {where}";
+    var sql = "select id,(select name from tbl_notificationgroups where id = groupid limit 1) as" +
+      " member_group,(select title from tbl_message_templates where group_id = groupid limit 1)" +
+      " as template, (case when approved = 'True' then 'Approved' else 'Not Approved' end)" +
+      " as status from tbl_group_notifications {where}";
 
     var whr = '';
 

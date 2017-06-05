@@ -1,37 +1,36 @@
 extend ../layout
-
-block brand
-	if item_name
-		| #{item_name}
-		
 block content
-	div.col-sm-10
-		div.panel.colourable.mar_u20
-			div.panel-body
-				h2 Member Notification
-				hr
-				form(method="POST", action="#{url}")
-					div.col-sm-10
-						.form-group.m-b-20
-							label.control-label #{__('Group')}
-							select.form-control(name="group")
-								option(value="")
-								each row in rows
-									option(value="#{row.id}") #{row.name}
-						.form-group.m-b-20
-							label.control-label #{__('Message')}
-							textarea.form-control(name="message", maxlength="600")
-							p.hint.hide Hint: Please use {name} tag to insert the recipient’s name in the location that you intend the name to appear within the message when composing a new message.
-						div(style="clear: both;")
-					div.col-sm-10
-						div.text-right
-							input.btn.btn-primary(type="submit", value="Send Message")
-						div(style="clear: both;")
-	div.error.mar_u20.col-sm-4
-		if message
-			p #{message}
-		if errors
-			ul.errors
-				each error in errors
-					li #{error.msg}
-	div(style="clear: both;")
+    div.col-sm-10
+        div.panel.colourable.mar_u20
+            div.panel-body
+                h2 Member Notification
+                hr
+                form(method="POST", action="#{url}")
+                    div.col-sm-10
+                        .form-group.m-b-20
+                            label.control-label #{__('Group')}
+                            select.form-control(name="group")
+                                each row in groups
+                                    option(value="#{row.id}") #{row.name}
+                        .form-group.m-b-20
+                            label.control-label #{__('Message Template')}
+                            select.form-control(name="template_id")
+                                each row in templates
+                                    option(value="#{row.id}") #{row.title}
+                        .form-group.m-b-20
+                            input(type="checkbox" value="true"
+                            name="include_manual_members")
+                            label #{__('Include manually added members')}
+                        div(style="clear: both;")
+                    div.col-sm-10
+                        div.text-right
+                            input.btn.btn-primary(type="submit", value="Send for Approval")
+                        div(style="clear: both;")
+    div.error.mar_u20.col-sm-4
+        if message
+            p #{message}
+        if errors
+            ul.errors
+                each error in errors
+                    li #{error.msg}
+    div(style="clear: both;")

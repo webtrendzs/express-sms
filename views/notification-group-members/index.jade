@@ -1,7 +1,4 @@
 extend ../layout
-block brand
-    if item_name
-        | #{item_name}
 block content
     div.col-sm-12
         div.col-sm-6
@@ -11,7 +8,7 @@ block content
                     span &nbsp;#{__('New Member')}
                 a.btn.btn-danger(style="margin-left:20px;",href="/#{space}/notification/groups")
                     i.fa.fa-arrow-left
-                    span &nbsp;#{__('Back')}
+                    span &nbsp;#{__('Back to Groups')}
         div.col-sm-6
             if can_add
                 a.btn.btn-primary(style="margin-left:20px;",href="/#{space}/notification-group/templates/#{groupid}")

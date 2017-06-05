@@ -5,6 +5,10 @@ module.exports.model = function(Sequelize, seq) {
 		id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true},
 				
 		groupid: {type: Sequelize.INTEGER },
+    
+    include_manual_members: {type: Sequelize.BOOLEAN, defaultValue: false },
+    
+    template_id: {type: Sequelize.INTEGER },
 
 		approved: {type: Sequelize.BOOLEAN },
 		

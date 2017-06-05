@@ -1,0 +1,27 @@
+extend ../layout
+block content
+    div.col-sm-8
+        div.panel.colourable.mar_u20
+            div.panel-body
+                h2 Buy SMS Credits
+                hr
+                form(method="POST", action="#{url}")
+                    input(type="hidden", name="account_id", value="#{user.user_id}")
+                    div.col-sm-7
+                        .form-group.m-b-20
+                            label.control-label #{__('Enter Amount')}
+                            input.form-control(type='text', name="amount")
+                    div.col-sm-5
+                        div.text-right.action-buttons
+                            button.btn.btn-primary(type="submit") Buy
+                            a.btn.btn-danger(href="/#{space}/credits") Cancel
+                        div(style="clear: both;")
+                    div(style="clear: both;")
+    div.error.mar_u20.col-sm-4
+        if message
+            p.alert.alert-info #{message}
+        if errors
+            ul.errors
+                each error in errors
+                    li #{error.msg}
+    div(style="clear: both;")

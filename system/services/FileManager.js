@@ -7,7 +7,7 @@ exports.uploadFile = function (req, callback) {
     var new_path = __dirname + '/../../uploads/' + new_name;
     fs.readFile(old_path, function (err, data) {
         fs.writeFile(new_path, data, function (err) {
-            MessageTemplateService.saveTemplateAttributes(req.params.groupid, new_path).then(function (_data) {
+            MessageTemplateService.saveTemplateAttributes(req.params, new_path).then(function (_data) {
                 fs.unlink(old_path, function (err) {
                     if (err) {
                         callback(err, null);

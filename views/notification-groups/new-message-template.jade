@@ -1,9 +1,4 @@
 extend ../layout
-
-block brand
-    if item_name
-        | #{item_name}
-
 block content
     div.col-sm-10
         div.panel.colourable.mar_u20
@@ -24,7 +19,7 @@ block content
                         div.text-right.action-buttons
                             - var a = (action === 'create') ? 'Add' : 'Update';
                             button.btn.btn-primary(type="submit") #{a}
-                            a.btn.btn-danger(href="/#{space}/notifications/groups") Cancel
+                            a.btn.btn-danger(href="/#{space}/notification-group/templates/#{group_id}") Cancel
                         div(style="clear: both;")
                     div(style="clear: both;")
     div.error.mar_u20.col-sm-2

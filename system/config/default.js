@@ -5,7 +5,7 @@ module.exports = {
     allowed_spaces:'(cci|sms)',
     client: 'Q-SMS',
     country_code:'254',
-    company: 'SMS Technologies',
+    company: 'Cloudsasa Technologies',
     i18n:{
         locales: ['en'],
         directory: __dirname + '/../helpers/locales',

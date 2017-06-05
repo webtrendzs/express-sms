@@ -6,6 +6,8 @@ module.exports.model = function(Sequelize, seq) {
 
         group_id: {type: Sequelize.INTEGER },
 
+        template_id: {type: Sequelize.INTEGER },
+
         attribute_name: {type: Sequelize.STRING }
     });
 

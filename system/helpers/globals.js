@@ -30,7 +30,6 @@ exports.register = function () {
     }).forEach(function (file) {
 
         if (file.substr(-3) == '.js') {
-
             global[file.substr(0, file.indexOf('.'))] = require(__dirname + '/../models/' + file).model(Sequelize, sequelize);
         }
     });

@@ -7,6 +7,8 @@ module.exports.model = function(Sequelize, seq) {
 		name: {type: Sequelize.STRING },
 
 		country: {type: Sequelize.STRING },
+
+		account_id: {type: Sequelize.INTEGER },
 		
 		status: { type: Sequelize.INTEGER, defaultValue: 0 }
 	});

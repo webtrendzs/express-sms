@@ -5,6 +5,8 @@ module.exports.model = function(Sequelize, seq) {
 		id: { type: Sequelize.BIGINT, primaryKey: true, autoIncrement: true },
 		
 		msisdn: { type: Sequelize.STRING(15), allowNull: false },
+
+		account_id: {type: Sequelize.INTEGER },
 		
 		message: { type: Sequelize.TEXT, allowNull: false },
 
