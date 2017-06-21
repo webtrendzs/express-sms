@@ -14,7 +14,7 @@ module.exports.controller = function (app) {
           "source": "+2547724691181",
           "destinationType" : "Wallet",
           "destination": "PaymentWallet",
-          "value": "KES 1000",
+          "value": "KES " + req.body.amount,
           "transactionFee": "KES 1.5",
           "providerFee": "KES 5.5",
           "status": "Success",

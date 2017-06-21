@@ -41,7 +41,10 @@ module.exports.controller = function (app) {
       
       request.post({
         url : Config.get('remote_url') + '/' + req.params.space + '/v1/payments/receive',
-        form: {account_id: req.user.user_id}
+        form: {
+          account_id: req.user.user_id,
+          amount    : req.body.amount
+        }
       }, function (a, b, _res) {
         if (_res.err) {
           return View.render('payments/buy_credits').with(req, res, {

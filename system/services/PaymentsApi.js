@@ -1,5 +1,5 @@
 exports.checkAuthenticated = function (req) {
 
-        return new Promise(Utils.promise(false, true));
+        return Utils.promise(false, true);
 
 };

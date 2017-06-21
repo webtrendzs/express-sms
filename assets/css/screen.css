@@ -3,20 +3,12 @@ body {
     font-size: 12px;
     line-height: 1.42857143;
     color: #555;
-    background-color:#d9aac9;
+    background-color:#fff;
 }
 
 .wrapper {
-    background: #7a76c0;
     height:100%;
-    background-repeat: no-repeat;
-    background: -webkit-linear-gradient(#7a76c0, #d9aac9);
-    background: -o-linear-gradient(#7a76c0, #d9aac9);
-    background: -moz-linear-gradient(#7a76c0, #d9aac9);
-    background: linear-gradient(#7a76c0, #d9aac9);
 }
-
-
 
 .login-wrapper, .login-wrapper .wrapper{
     background: #7d7d7d;
@@ -40,7 +32,6 @@ body {
     margin: 0 auto;
     width: 90%;
     font-weight: 900;
-    margin-bottom: -20px;
     padding-top: 12px;
     text-shadow: 2px 2px #7d7d7d;
 }
@@ -70,8 +61,13 @@ body {
     margin-left: 7px;
 }
 
+#system .brand {
+    width:70px;
+}
+
 #system img {
-    vertical-align: baseline;
+    max-width: 100%;
+
 }
 
 #system .pull-right:before{
@@ -88,7 +84,6 @@ body {
 
 #main,footer {
     padding:30px;
-    background-color:#eef2f5;
 }
 
 #main .btn{

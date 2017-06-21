@@ -141,10 +141,20 @@ module.exports.controller = function (app) {
                   attributes: ['message']
                 }).then(function (template) {
                   if(template) {
-                    SMS.sendBulk('table', _.flatMap(results), template.message, false, function (err, success) {
+  
+                    SMS.configure({
+                      recipients: _.flatMap(results),
+                      account_id: req.user.user_id,
+                      price_id  : 1,
+                      message   : template.message
+                    }).then(function (config) {
+                      SMS.sendBulk(function (err, success) {
+                        notification.updateAttributes({approved: true});
+                        res.redirect('/' + req.params.space + '/notification/approve');
+                      });
+                    }).catch(function (err) {
                       Utils.log(err);
-                      notification.updateAttributes({approved: true});
-                      res.redirect('/' + req.params.space + '/notification/approve');
+                      res.redirect('/'+req.params.space+'/notification/approve')
                     });
                   }
                 });

@@ -1,12 +1,12 @@
-exports.send = function(_to, message, callback){
+exports.send = function(config, callback){
 
     var querystring = require('querystring');
     var https = require('https');
     var api = Config.get('smsApi');
     var post_data = querystring.stringify({
         'username': api.username,
-        'to': _to,
-        'message': message
+        'to': _.last(config.recipients),
+        'message': config.message
     });
 
     var post_options = {
@@ -34,7 +34,7 @@ exports.send = function(_to, message, callback){
             if (recipients.length > 0) {
                 for (var i = 0; i < recipients.length; ++i) {
 
-                    Message.create({msisdn: _to, message: message, status: 'Sent'}).then(function (result) {
+                    Message.create({msisdn: recipients[i], message: message, status: 'Sent'}).then(function (result) {
                         callback(null, result);
                     }).catch(function (err) {
                         console.log(err);

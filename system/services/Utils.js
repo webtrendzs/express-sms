@@ -155,13 +155,13 @@ exports.isValidMsisdn = function(value,country) {
 
 exports.promise=function(err,response){
 
-    return function (resolve, reject) {
+    return new Promise(function (resolve, reject) {
 
         if (!err)
             return resolve(response);
         else
             return reject(err);
-    }
+    });
 
 };
 

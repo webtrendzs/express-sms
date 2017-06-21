@@ -8,6 +8,9 @@ module.exports.config = function (params) {
     useHttps     : false,
     disableCron  : false,
     country_code : '+254',
+    smsPrices: {
+      '16': 2
+    },
     remote_url   : 'http://localhost:8188',
     // Africastalking SMS API credentials
     smsApi       : {
